@@ -35,3 +35,17 @@ def add_poke
   end
   poke
 end
+
+def pack_pokes(qty)
+  pokelist = []
+  i = 0
+  loop do
+    puts "##{i + 1}"
+    pokelist.append(add_poke)
+    i += 1
+    break if i >= qty
+  end
+  pokelist
+end
+
+pack_pokes(getpoke_qty)
