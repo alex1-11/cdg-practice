@@ -48,4 +48,5 @@ def pack_pokes(qty)
   pokelist
 end
 
-pack_pokes(getpoke_qty)
+pokelist = pack_pokes(getpoke_qty)
+puts "===\nHere is your list of pokemons: \n" + pokelist.inspect
