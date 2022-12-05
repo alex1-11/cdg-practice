@@ -1,4 +1,5 @@
 FILENAME = 'sample.txt'.freeze
+BUFFER = 'buffer.txt'.freeze
 
 # Puts all the lines from file
 def index
@@ -30,8 +31,14 @@ def where(pattern)
   return result
 end
 
-def update(id,text)
-
+def update(id, text)
+  buffer = File.open(BUFFER, 'w')
+  File.foreach(FILENAME).with_index do |str, index|
+    buffer.puts(index == id ? text : str)
+  end
+  buffer.close
+  File.write(FILENAME, File.read(BUFFER))
+  File.delete(BUFFER) if File.exist?(BUFFER)
 end
 
 def delete(id)
