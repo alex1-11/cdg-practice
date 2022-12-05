@@ -42,7 +42,13 @@ def update(id, text)
 end
 
 def delete(id)
-
+  buffer = File.open(BUFFER, 'w')
+  File.foreach(FILENAME).with_index do |str, index|
+    buffer.print(index == id ? '' : str)
+  end
+  buffer.close
+  File.write(FILENAME, File.read(BUFFER))
+  File.delete(BUFFER) if File.exist?(BUFFER)
 end
 
 def create(name)
