@@ -28,7 +28,7 @@ def where(pattern)
       result.push(str)
     end
   end
-  return result
+  result
 end
 
 def update(id, text)
@@ -52,6 +52,5 @@ def delete(id)
 end
 
 def create(name)
-
+  File.write(FILENAME, "#{name}\n", mode: 'a')
 end
-

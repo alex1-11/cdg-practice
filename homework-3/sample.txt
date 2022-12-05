@@ -4,3 +4,5 @@ Sam 27
 Dean 29
 Joey 41
 Trinity 33
+Lola 11
+Cris 48
