@@ -9,7 +9,7 @@ def choose_students
   # Loop through students' list
   loop do
     # Ask for age input
-    print 'Enter student`s age to search for: '
+    puts "\nEnter student`s age to search for:"
     asked_age = gets.chomp
     # Finish early if user input exit code '-1'
     break if asked_age == '-1'
