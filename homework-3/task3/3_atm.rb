@@ -18,17 +18,31 @@ def ask_next
   puts 'Do you want anything else? Type in one of the options:'.freeze, TIP
 end
 
+# Verify if input is Float type -- https://stackoverflow.com/a/31411319/20260711
+def input_float
+  begin
+    amount = Float(gets.chomp)
+  rescue ArgumentError
+    puts 'Amount should be a NUMBER. Floating point is allowed.'.freeze
+    retry
+  end
+end
+
+# Puts user's account balance at console
 def balance(account)
   puts "Current balance is #{account} golden units"
 end
 
+# Asks for amount and increses the account balance
 def deposit(account)
   print 'Enter amount you wish to deposit: '
   amount = 0.0
-  until amount > 0
-    amount = gets.to_f
-    puts 'Amount should be positive number' if amount
-  end 
+  # Verify user input: must be positive and float/int
+  until amount.positive?
+    amount = input_float
+    puts 'Amount should be a POSITIVE number' if amount <= 0
+  end
+  account + amount
 end
 
 
@@ -51,17 +65,17 @@ def use_atm
     command = gets.chomp.upcase
     # Update account balance varibale depending on command -- https://www.alanwsmith.com/posts/assigning-ruby-variables-with-a-case-statement--20en0nhdumt0
     account = case command
-    when 'B'
-      balance(account)
-    when 'D'
-      deposit(account)
-    when 'W'
-      withdraw(account)
-    when 'Q'
-      quit(account)
-    else
-      puts "Input error. No such command. Type one of these chars:\n", COMMANDS
-    end
+              when 'B'
+                balance(account)
+              when 'D'
+                deposit(account)
+              when 'W'
+                withdraw(account)
+              when 'Q'
+                quit(account)
+              else
+                puts "Input error. No such command. Type one of these chars:\n", COMMANDS
+              end
     ask_next
   end
 end
