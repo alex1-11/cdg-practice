@@ -82,7 +82,7 @@ end
 
 # Asks user for command input and triggers the action ATM should take
 class CommandController
-  def initialize
+  def initialize(atm)
     # Interact with user, give starting instructions
     puts GREETING, TIP
     loop do
@@ -92,13 +92,13 @@ class CommandController
       # Update account balance varibale depending on command -- https://www.alanwsmith.com/posts/assigning-ruby-variables-with-a-case-statement--20en0nhdumt0
       case command
       when 'B'
-        Atm.balance
+        atm.balance
       when 'D'
-        Atm.deposit
+        atm.deposit
       when 'W'
-        Atm.withdraw
+        atm.withdraw
       when 'Q'
-        Atm.quit
+        atm.quit
         break
       else
         puts 'ERROR: Input error! No such command. <<<<<<<<<<<<<<<<<'
@@ -107,5 +107,5 @@ class CommandController
   end
 end
 
-Atm.new
-CommandController.new
+atm = Atm.new
+CommandController.new(atm)
