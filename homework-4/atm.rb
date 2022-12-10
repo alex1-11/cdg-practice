@@ -17,10 +17,6 @@ Enter the command: ).freeze
 
 COMMANDS = ['B', 'D', 'W', 'Q'].map(&:freeze)
 
-def ask_next
-  puts 'To proceed type-in one of the options:'.freeze, TIP
-end
-
 # Verify if input is positive and Float type -- https://stackoverflow.com/a/31411319/20260711
 def input_float
   amount = Float(gets.chomp)
@@ -42,28 +38,6 @@ class Atm
     @account = File.exist?(BALANCE) ? File.read(BALANCE).to_f : DEFAULT_BALANCE
     # Interact with user, give instructions
     puts GREETING, TIP
-    # TODO: controller
-    loop do
-      # Ask user input, force to upcase
-      command = gets.chomp.upcase
-      puts
-      # Update account balance varibale depending on command -- https://www.alanwsmith.com/posts/assigning-ruby-variables-with-a-case-statement--20en0nhdumt0
-      case command
-      when 'B'
-        self.balance
-      when 'D'
-        self.deposit
-      when 'W'
-        self.withdraw
-      when 'Q'
-        self.quit
-        break
-      else
-        puts 'ERROR: Input error! No such command. <<<<<<<<<<<<<<<<<'
-        account
-      end
-      ask_next
-    end
     puts '===================================================',
          'Thanks for using Royal bank of Stormwind! Good bye!',
          '==================================================='
@@ -108,4 +82,30 @@ class Atm
   end
 end
 
+class CommandController
+  def initialize
+    loop do
+      # Ask user input, force to upcase
+      command = gets.chomp.upcase
+      puts ''
+      # Update account balance varibale depending on command -- https://www.alanwsmith.com/posts/assigning-ruby-variables-with-a-case-statement--20en0nhdumt0
+      case command
+      when 'B'
+        Atm.balance
+      when 'D'
+        Atm.deposit
+      when 'W'
+        Atm.withdraw
+      when 'Q'
+        Atm.quit
+        break
+      else
+        puts 'ERROR: Input error! No such command. <<<<<<<<<<<<<<<<<'
+      end
+      puts 'To proceed type-in one of the options:'.freeze, TIP
+    end
+  end
+end
+
 Atm.new
+CommandController.new
