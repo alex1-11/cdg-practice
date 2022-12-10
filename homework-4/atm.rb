@@ -4,11 +4,10 @@ DEFAULT_BALANCE = 100.0
 GREETING = "
 =============================================
 Hello and welcome to Royal bank of Stormwind!
-=============================================
-To use ATM - type the following commands \
-to the console and follow instructions:".freeze
+=============================================".freeze
 
-TIP = %(  B - show current account balance,
+TIP = %(  To proceed type-in one of the options:
+  B - show current account balance,
   D - deposit extra money to the account,
   W - withdraw money from the account,
   Q - quit ATM.
@@ -36,54 +35,56 @@ class Atm
   def initialize
     # Load up balance or use default size if not defined
     @account = File.exist?(BALANCE) ? File.read(BALANCE).to_f : DEFAULT_BALANCE
-    # Interact with user, give instructions
-    puts GREETING, TIP
-    puts '===================================================',
-         'Thanks for using Royal bank of Stormwind! Good bye!',
-         '==================================================='
   end
 
   # Puts user's account balance at console
-  def balance(account)
+  def balance
     puts '__________________________________________',
-        '',
-        "Current balance is #{account} golden units",
-        '__________________________________________'
-    account
+         '',
+         "Current balance is #{@account} golden units",
+         '__________________________________________'
   end
 
   # Asks for amount and increses the account balance
-  def deposit(account)
+  def deposit
     print 'Enter amount you wish to deposit: '
     amount = input_float
-    puts
-    puts 'Deposit successfully completed.' if amount != 0
-    account + amount
+    puts ''
+    puts 'Deposit successfully completed.' if amount > 0
+    @account += amount
   end
 
   # Asks for amount to withdraw, checks if it's possible and updates account
-  def withdraw(account)
+  def withdraw
     print 'Enter amount you wish to withdraw: '
     amount = input_float
-    puts
+    puts ''
     # Make sure user has sufficient balance
-    if amount > account
+    if amount > @account
       puts 'ERROR! Balance insufficient! <<<<<<<<<<<<<<<<<'
       amount = 0
     end
     puts 'Withdrawal successfully completed.' if amount != 0
-    account - amount
+    @account -= amount
   end
 
   # Saves current account balance to the file and closes it
-  def quit(account)
+  def quit
     puts 'Closing session...'
-    File.write(BALANCE, account)
+    File.write(BALANCE, @account)
+    puts '',
+         '===================================================',
+         'FUNDS ARE SAFU!',
+         'Thanks for using Royal bank of Stormwind! Good bye!',
+         '==================================================='
   end
 end
 
+# Asks user for command input and triggers the action ATM should take
 class CommandController
   def initialize
+    # Interact with user, give starting instructions
+    puts GREETING, TIP
     loop do
       # Ask user input, force to upcase
       command = gets.chomp.upcase
@@ -102,7 +103,6 @@ class CommandController
       else
         puts 'ERROR: Input error! No such command. <<<<<<<<<<<<<<<<<'
       end
-      puts 'To proceed type-in one of the options:'.freeze, TIP
     end
   end
 end
