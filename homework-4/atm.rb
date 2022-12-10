@@ -35,74 +35,77 @@ rescue ArgumentError
   0
 end
 
-# Puts user's account balance at console
-def balance(account)
-  puts '__________________________________________',
-       '',
-       "Current balance is #{account} golden units",
-       '__________________________________________'
-  account
-end
-
-# Asks for amount and increses the account balance
-def deposit(account)
-  print 'Enter amount you wish to deposit: '
-  amount = input_float
-  puts
-  puts 'Deposit successfully completed.' if amount != 0
-  account + amount
-end
-
-# Asks for amount to withdraw, checks if it's possible and updates account
-def withdraw(account)
-  print 'Enter amount you wish to withdraw: '
-  amount = input_float
-  puts
-  # Make sure user has sufficient balance
-  if amount > account
-    puts 'ERROR! Balance insufficient! <<<<<<<<<<<<<<<<<'
-    amount = 0
+class Atm
+  # Starts ATM with full functionality
+  def initialize
+    # Load up balance or use default size if not defined
+    @account = File.exist?(BALANCE) ? File.read(BALANCE).to_f : DEFAULT_BALANCE
+    # Interact with user, give instructions
+    puts GREETING, TIP
+    # TODO: controller
+    loop do
+      # Ask user input, force to upcase
+      command = gets.chomp.upcase
+      puts
+      # Update account balance varibale depending on command -- https://www.alanwsmith.com/posts/assigning-ruby-variables-with-a-case-statement--20en0nhdumt0
+      case command
+      when 'B'
+        self.balance
+      when 'D'
+        self.deposit
+      when 'W'
+        self.withdraw
+      when 'Q'
+        self.quit
+        break
+      else
+        puts 'ERROR: Input error! No such command. <<<<<<<<<<<<<<<<<'
+        account
+      end
+      ask_next
+    end
+    puts '===================================================',
+         'Thanks for using Royal bank of Stormwind! Good bye!',
+         '==================================================='
   end
-  puts 'Withdrawal successfully completed.' if amount != 0
-  account - amount
-end
 
-# Saves current account balance to the file and closes it
-def quit(account)
-  puts 'Closing session...'
-  File.write(BALANCE, account)
-end
+  # Puts user's account balance at console
+  def balance(account)
+    puts '__________________________________________',
+        '',
+        "Current balance is #{account} golden units",
+        '__________________________________________'
+    account
+  end
 
-# Main script, starts ATM with full functionality
-def use_atm
-  # Load up balance or use default size if not defined
-  account = File.exist?(BALANCE) ? File.read(BALANCE).to_f : DEFAULT_BALANCE
-  # Interact with user, give instructions
-  puts GREETING, TIP
-  # Ask user input, force to upcase
-  loop do
-    command = gets.chomp.upcase
+  # Asks for amount and increses the account balance
+  def deposit(account)
+    print 'Enter amount you wish to deposit: '
+    amount = input_float
     puts
-    # Update account balance varibale depending on command -- https://www.alanwsmith.com/posts/assigning-ruby-variables-with-a-case-statement--20en0nhdumt0
-    account = case command
-              when 'B'
-                balance(account)
-              when 'D'
-                balance(deposit(account))
-              when 'W'
-                balance(withdraw(account))
-              when 'Q'
-                quit(account)
-                break
-              else
-                puts 'ERROR: Input error! No such command. <<<<<<<<<<<<<<<<<'
-                account
-              end
-    ask_next
+    puts 'Deposit successfully completed.' if amount != 0
+    account + amount
   end
-  puts '===================================================',
-       'Thanks for using Royal bank of Stormwind! Good bye!',
-       '==================================================='
+
+  # Asks for amount to withdraw, checks if it's possible and updates account
+  def withdraw(account)
+    print 'Enter amount you wish to withdraw: '
+    amount = input_float
+    puts
+    # Make sure user has sufficient balance
+    if amount > account
+      puts 'ERROR! Balance insufficient! <<<<<<<<<<<<<<<<<'
+      amount = 0
+    end
+    puts 'Withdrawal successfully completed.' if amount != 0
+    account - amount
+  end
+
+  # Saves current account balance to the file and closes it
+  def quit(account)
+    puts 'Closing session...'
+    File.write(BALANCE, account)
+  end
 end
 
-use_atm
+Atm.new
