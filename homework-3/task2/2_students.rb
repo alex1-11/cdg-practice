@@ -6,6 +6,7 @@ def choose_students
   data = File.readlines(FILENAME).map(&:chomp)
   # Reset results.txt
   File.write(RESULTS, '')
+
   # Loop through students' list
   loop do
     # Ask for age input
@@ -26,11 +27,13 @@ def choose_students
         puts "> Students left unselected: #{data.size}"
       end
     end
+
     # Finish if all the students were written to results.txt
     break if data.empty?
     # Loop back for age input otherwise
   end
-  puts '> Finished. Check "results.txt" to see the output.'
+
+  puts "> Finished. Check '#{RESULTS}' to see the output."
 end
 
 choose_students
