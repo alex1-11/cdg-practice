@@ -5,8 +5,7 @@ GREETING = "
 =============================================
 Hello and welcome to Royal bank of Stormwind!
 =============================================
-To use ATM - type the following commands \
-to the console and follow instructions:".freeze
+".freeze
 
 TIP = %(  B - show current account balance,
   D - deposit extra money to the account,
@@ -14,12 +13,6 @@ TIP = %(  B - show current account balance,
   Q - quit ATM.
 
 Enter the command: ).freeze
-
-COMMANDS = ['B', 'D', 'W', 'Q'].map(&:freeze)
-
-def ask_next
-  puts 'To proceed type-in one of the options:'.freeze, TIP
-end
 
 # Verify if input is positive and Float type -- https://stackoverflow.com/a/31411319/20260711
 def input_float
@@ -78,9 +71,10 @@ def use_atm
   # Load up balance or use default size if not defined
   account = File.exist?(BALANCE) ? File.read(BALANCE).to_f : DEFAULT_BALANCE
   # Interact with user, give instructions
-  puts GREETING, TIP
+  puts GREETING
   # Ask user input, force to upcase
   loop do
+    puts 'To proceed type-in one of the options:'.freeze, TIP
     command = gets.chomp.upcase
     puts
     # Update account balance varibale depending on command -- https://www.alanwsmith.com/posts/assigning-ruby-variables-with-a-case-statement--20en0nhdumt0
@@ -98,9 +92,9 @@ def use_atm
                 puts 'ERROR: Input error! No such command. <<<<<<<<<<<<<<<<<'
                 account
               end
-    ask_next
   end
   puts '===================================================',
+       'FUNDS ARE SAFU!',
        'Thanks for using Royal bank of Stormwind! Good bye!',
        '==================================================='
 end
