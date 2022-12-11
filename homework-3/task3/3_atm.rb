@@ -72,6 +72,7 @@ def use_atm
   account = File.exist?(BALANCE) ? File.read(BALANCE).to_f : DEFAULT_BALANCE
   # Interact with user, give instructions
   puts GREETING
+  
   # Ask user input, force to upcase
   loop do
     puts 'To proceed type-in one of the options:'.freeze, TIP
@@ -93,6 +94,7 @@ def use_atm
                 account
               end
   end
+  
   puts '===================================================',
        'FUNDS ARE SAFU!',
        'Thanks for using Royal bank of Stormwind! Good bye!',
