@@ -1,4 +1,4 @@
-def getword
+def get_word
   print 'Type a word > '
   gets.chomp
 end
@@ -11,4 +11,4 @@ def cspower(word)
   end
 end
 
-cspower(getword)
+cspower(get_word)
