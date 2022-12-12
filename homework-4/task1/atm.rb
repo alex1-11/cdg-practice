@@ -22,6 +22,12 @@ class Atm
     @account = File.exist?(BALANCE) ? File.read(BALANCE).to_f : DEFAULT_BALANCE
   end
 
+  # Starts CommandController with CLI
+  def init
+    CommandController.new(self)
+    puts ''
+  end
+
   # Puts user's account balance at console
   def balance
     puts '__________________________________________',
@@ -121,4 +127,5 @@ class CommandController
 end
 
 atm = Atm.new
-CommandController.new(atm)
+
+atm.init
