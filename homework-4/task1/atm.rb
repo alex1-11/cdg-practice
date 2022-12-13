@@ -14,18 +14,43 @@ TIP = %(  To proceed type-in one of the options:
 
 Enter the command: ).freeze
 
-# The ATM app. Initialize an instance as a variable.
-# Then initialize a CommandController for interaction.
+# The ATM app. Initialize an instance as a variable to load up balance value.
+# Then use init for CLI to interact.
 class Atm
   # Starts ATM, loads up balance or uses default size if not defined
   def initialize
     @account = File.exist?(BALANCE) ? File.read(BALANCE).to_f : DEFAULT_BALANCE
   end
 
-  # Starts CommandController with CLI
+  # Starts CLI to interact with ATM.
+  # Asks user for command input and triggers the action ATM should take.
   def init
-    CommandController.new(self)
-    puts ''
+    # Interact with user, give starting instructions
+    puts GREETING
+
+    loop do
+      # Ask user input, force to upcase
+      puts TIP
+      command = gets.chomp.upcase
+      puts ''
+
+      # Execute the given command depending on preset
+      case command
+      when 'B'
+        balance
+      when 'D'
+        deposit
+        balance
+      when 'W'
+        withdraw
+        balance
+      when 'Q'
+        quit
+        break
+      else
+        puts 'ERROR: Input error! No such command. <<<<<<<<<<<<<<<<<'
+      end
+    end
   end
 
   # Puts user's account balance at console
@@ -92,38 +117,6 @@ class Atm
   end
 
   private :input_float
-end
-
-# Asks user for command input and triggers the action ATM should take
-class CommandController
-  def initialize(atm)
-    # Interact with user, give starting instructions
-    puts GREETING
-
-    loop do
-      # Ask user input, force to upcase
-      puts TIP
-      command = gets.chomp.upcase
-      puts ''
-
-      # Execute the given command depending on preset
-      case command
-      when 'B'
-        atm.balance
-      when 'D'
-        atm.deposit
-        atm.balance
-      when 'W'
-        atm.withdraw
-        atm.balance
-      when 'Q'
-        atm.quit
-        break
-      else
-        puts 'ERROR: Input error! No such command. <<<<<<<<<<<<<<<<<'
-      end
-    end
-  end
 end
 
 atm = Atm.new
