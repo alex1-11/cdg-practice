@@ -3,7 +3,7 @@ BUFFER = 'buffer.txt'.freeze
 
 # Puts all the lines from file
 def index
-  print File.read(FILENAME)
+  File.foreach(FILENAME) {|line| puts line}
 end
 
 # Finds line with under given id puts and returns it
