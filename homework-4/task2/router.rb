@@ -32,18 +32,19 @@ class PostsController
   end
 
   # Asks user to input id of post. Returns positive integer (or nil if invalid)
+  # It is considered that posts' IDs are zero-indexed
   def get_post_id
     print 'Enter post`s id: '
     id = Integer(gets.chomp)
-    if !id.positive?
-      puts 'Error! Invalid id value. Use positive number instead'
+    if id.negative?
+      puts 'Error! Invalid id value. Use positive number or zero instead'
       nil
-    elsif @posts[id - 1].nil?
+    elsif @posts[id].nil?
       print 'Post not found. '
       if @posts.empty?
         puts 'There are no posts at all'
       else
-        puts "Try number from 1 to #{@posts.size}"
+        puts "Try number from 0 to #{@posts.size - 1}"
       end
       nil
     else
@@ -67,9 +68,7 @@ class PostsController
     if @posts.empty?
       puts 'Empty here. No posts to show at all'
     else
-      # Puts index from 0-indexed array (but for UX #{index + 1} would be better)
-      # It is considered that posts have regular one-indexed list of IDs
-      # But `index` method puts indeces 0-based because of task's definition
+      # Puts index from 0-indexed array
       @posts.each.with_index { |post, index| puts "#{index}. #{post}" }
       @posts
     end
@@ -79,8 +78,8 @@ class PostsController
   def show
     id = get_post_id
     if id
-      puts "#{id}. #{@posts[id - 1]}"
-      @posts[id - 1]
+      puts "#{id}. #{@posts[id]}"
+      @posts[id]
     end
   end
 
@@ -92,7 +91,7 @@ class PostsController
 
     @posts << post
     puts 'Created new post (id. text):',
-         "#{@posts.size}. #{@posts[-1]}"
+         "#{@posts.size - 1}. #{@posts[-1]}"
     @posts[-1]
   end
 
@@ -115,7 +114,7 @@ class PostsController
     id = get_post_id
     return puts 'DESTRUCTION aborted =)' if id.nil?
 
-    @posts.delete_at(id - 1)
+    @posts.delete_at(id)
     puts "Deleted post ##{id}"
     id
   end
