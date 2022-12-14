@@ -28,15 +28,36 @@ class PostsController
   extend Resource
 
   def initialize
-    @posts = []
+    @posts = [] # ['foo', 'bar', 'baz']
   end
 
   def index
-    puts 'index'
+    if @posts.empty?
+      puts 'Empty here. No posts to show at all'
+    else
+      @posts.each.with_index { |post, index| puts "#{index}. #{post}" }
+      @posts
+    end
   end
 
   def show
-    puts 'show'
+    print 'Enter post`s id: '
+    id = Integer(gets.chomp)
+    if !id.positive?
+      puts 'Error! Invalid id value. Use positive number instead'
+    elsif @posts[id - 1].nil?
+      print 'Post not found. '
+      if @posts.empty?
+        puts 'There are no posts to show at all'
+      else
+        puts "Try number from 1 to #{@posts.size}"
+      end
+    else
+      puts "#{id}. #{@posts[id - 1]}"
+      @posts[id - 1]
+    end
+  rescue ArgumentError
+    puts 'Error! Invalid id type. Use integer number instead.'
   end
 
   def create
