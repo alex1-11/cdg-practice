@@ -100,7 +100,7 @@ class PostsController
     id = get_post_id
     return puts 'Update aborted' if id.nil?
 
-    new_text = get_post_text(update)
+    new_text = get_post_text('update')
     return puts 'Update aborted' if new_text.nil?
 
     @posts[id] = new_text
