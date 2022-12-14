@@ -37,6 +37,7 @@ class PostsController
     id = Integer(gets.chomp)
     if !id.positive?
       puts 'Error! Invalid id value. Use positive number instead'
+      nil
     elsif @posts[id - 1].nil?
       print 'Post not found. '
       if @posts.empty?
@@ -44,17 +45,21 @@ class PostsController
       else
         puts "Try number from 1 to #{@posts.size}"
       end
+      nil
     else
       id
     end
   rescue ArgumentError
     puts 'Error! Invalid id type. Use integer number instead.'
+    nil
   end
 
   def get_post_text(action)
     print 'Write text here: '
     text = gets.chomp
     return puts "Error! Can`t #{action} with no text" if text.empty?
+
+    text
   end
 
   # Puts to the console all the posts (packed in indexed list)
@@ -62,6 +67,9 @@ class PostsController
     if @posts.empty?
       puts 'Empty here. No posts to show at all'
     else
+      # Puts index from 0-indexed array (but for UX #{index + 1} would be better)
+      # It is considered that posts have regular one-indexed list of IDs
+      # But `index` method puts indeces 0-based because of task's definition
       @posts.each.with_index { |post, index| puts "#{index}. #{post}" }
       @posts
     end
@@ -78,7 +86,10 @@ class PostsController
 
   # Asks for text (not empty) and pushes it to posts array
   def create
+    puts 'Creation initialized...'
     post = get_post_text('create')
+    return puts 'Creation aborted' if post.nil?
+
     @posts << post
     puts 'Created new post (id. text):',
          "#{@posts.size}. #{@posts[-1]}"
@@ -86,6 +97,7 @@ class PostsController
   end
 
   def update
+    puts 'Update initialized...'
     id = get_post_id
     return puts 'Update aborted' if id.nil?
 
@@ -99,7 +111,13 @@ class PostsController
   end
 
   def destroy
-    puts 'destroy'
+    puts 'DESTRUCTION INITIALIZED!!!11...'
+    id = get_post_id
+    return puts 'DESTRUCTION aborted =)' if id.nil?
+
+    @posts.delete_at(id - 1)
+    puts "Deleted post ##{id}"
+    id
   end
 end
 
