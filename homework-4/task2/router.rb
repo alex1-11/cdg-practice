@@ -31,6 +31,33 @@ class PostsController
     @posts = ['foo', 'bar', 'baz']
   end
 
+  # Asks user to input id of post. Returns positive integer (or nil if invalid)
+  def get_post_id
+    print 'Enter post`s id: '
+    id = Integer(gets.chomp)
+    if !id.positive?
+      puts 'Error! Invalid id value. Use positive number instead'
+    elsif @posts[id - 1].nil?
+      print 'Post not found. '
+      if @posts.empty?
+        puts 'There are no posts at all'
+      else
+        puts "Try number from 1 to #{@posts.size}"
+      end
+    else
+      id
+    end
+  rescue ArgumentError
+    puts 'Error! Invalid id type. Use integer number instead.'
+  end
+
+  def get_post_text(action)
+    print 'Write text here: '
+    text = gets.chomp
+    return puts "Error! Can`t #{action} with no text" if text.empty?
+  end
+
+  # Puts to the console all the posts (packed in indexed list)
   def index
     if @posts.empty?
       puts 'Empty here. No posts to show at all'
@@ -40,30 +67,18 @@ class PostsController
     end
   end
 
+  # Asks for post id to find and puts it to the console
   def show
-    print 'Enter post`s id: '
-    id = Integer(gets.chomp)
-    if !id.positive?
-      puts 'Error! Invalid id value. Use positive number instead'
-    elsif @posts[id - 1].nil?
-      print 'Post not found. '
-      if @posts.empty?
-        puts 'There are no posts to show at all'
-      else
-        puts "Try number from 1 to #{@posts.size}"
-      end
-    else
+    id = get_post_id
+    if id
       puts "#{id}. #{@posts[id - 1]}"
       @posts[id - 1]
     end
-  rescue ArgumentError
-    puts 'Error! Invalid id type. Use integer number instead.'
   end
 
+  # Asks for text (not empty) and pushes it to posts array
   def create
-    print 'Write your post here: '
-    post = gets.chomp
-    return puts 'Error! Can`t create an empty post' if post.empty?
+    post = get_post_text('create')
     @posts << post
     puts 'Created new post (id. text):',
          "#{@posts.size}. #{@posts[-1]}"
@@ -71,7 +86,16 @@ class PostsController
   end
 
   def update
-    puts 'update'
+    id = get_post_id
+    return puts 'Update aborted' if id.nil?
+
+    new_text = get_post_text(update)
+    return puts 'Update aborted' if new_text.nil?
+
+    @posts[id] = new_text
+    puts 'Updated post (id. text):',
+         "#{id}. #{@posts[id]}"
+    @posts[id]
   end
 
   def destroy
