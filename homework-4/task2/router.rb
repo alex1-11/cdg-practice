@@ -28,7 +28,7 @@ class PostsController
   extend Resource
 
   def initialize
-    @posts = [] # ['foo', 'bar', 'baz']
+    @posts = ['foo', 'bar', 'baz']
   end
 
   def index
@@ -61,7 +61,13 @@ class PostsController
   end
 
   def create
-    puts 'create'
+    print 'Write your post here: '
+    post = gets.chomp
+    return puts 'Error! Can`t create an empty post' if post.empty?
+    @posts << post
+    puts 'Created new post (id. text):',
+         "#{@posts.size}. #{@posts[-1]}"
+    @posts[-1]
   end
 
   def update
