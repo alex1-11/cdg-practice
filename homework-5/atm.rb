@@ -59,6 +59,7 @@ class Atm
          '',
          "Current balance is #{@account} golden units",
          '__________________________________________'
+    @account
   end
 
   # Gets correct float from user input
