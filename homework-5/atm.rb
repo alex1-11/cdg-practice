@@ -18,6 +18,7 @@ Enter the command: ).freeze
 # Then use init for CLI to interact.
 class Atm
   attr_reader :account
+
   # Starts ATM, loads up balance or uses default size if not defined
   def initialize
     @account = File.exist?(BALANCE) ? File.read(BALANCE).to_f : DEFAULT_BALANCE
