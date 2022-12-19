@@ -3,19 +3,26 @@ require './atm'
 
 RSpec.describe Atm do
   subject { described_class.new }
-  
-  describe '#initialize' do
 
+  describe '#initialize' do
     let(:acc) { File.read(BALANCE).to_f if File.exist?(BALANCE) }
 
     it 'passes when account balance is loaded and is a non-negative Float' do
       expect(subject.account).to be >= 0
       expect(subject.account).to be_instance_of(Float)
       expect(subject.account).to eq(DEFAULT_BALANCE).or eq(acc)
-
     end
   end
-  
+
+  describe '#balance' do
+    it 'messages in console and returns account value' do
+      expect { subject.balance }.to output(
+        /Current balance is #{subject.account} golden units/
+      ).to_stdout
+      expect(subject.balance).to eq subject.account
+    end
+  end
+end
   # describe '.input_float' do
   #   it 'asks user to input float' do
   #     expect(atm.input_float).to eq Float
@@ -26,12 +33,11 @@ RSpec.describe Atm do
   
   #     it { expect { subject }.to raise_error(ArgumentError) }
   #   end
-  
+
   
   #   desribe '#deposit' do
   #   end
   # end
-end
 
 # before do
 #   allow(subject).to receive(:loop).and_yield
