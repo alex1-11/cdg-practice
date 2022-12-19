@@ -3,8 +3,17 @@ require './atm'
 
 RSpec.describe Atm do
   subject { described_class.new }
+  
   describe '#initialize' do
-    it { expect(subject.account).to be > 0 }
+
+    let(:acc) { File.read(BALANCE).to_f if File.exist?(BALANCE) }
+
+    it 'passes when account balance is loaded and is a non-negative Float' do
+      expect(subject.account).to be >= 0
+      expect(subject.account).to be_instance_of(Float)
+      expect(subject.account).to eq(DEFAULT_BALANCE).or eq(acc)
+
+    end
   end
   
   # describe '.input_float' do
