@@ -24,17 +24,17 @@ RSpec.describe Atm do
   end
 
   describe '.input_float' do
-    let(:input) { '100' }
+    let(:input) { '100.75' }
 
     before { allow_any_instance_of(Kernel).to receive(:gets).and_return(input) }
 
     it 'asks to input float, validates value and returns float' do
       # https://tips.tutorialhorizon.com/2016/08/11/how-to-test-a-private-method-in-rspec
-      expect(subject.send(:input_float)).to equal 100.0
+      expect(subject.send(:input_float)).to equal 100.75
     end
 
     context 'when input is negative' do
-      let(:input) { '-7' }
+      let(:input) { '-7.25' }
 
       it 'throws message to console and returns 0' do
         expect { subject.send(:input_float) }.to output(
@@ -55,6 +55,13 @@ RSpec.describe Atm do
       end
     end
   end
+
+  # describe '#deposit' do
+  #   let(:input) { '100' }
+
+  #   before { allow_any_instance_of(Kernel).to receive(:gets).and_return(input) }
+
+  # end
 end
 
   # describe '.input_float' do
