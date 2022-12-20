@@ -67,35 +67,37 @@ RSpec.describe Atm do
   end
 
   describe '#withdraw' do
-    let(:amount) { '9000.25' }
+    let(:amount) { '100.25' }
 
+    # Handle user input
     before do
-      # Handle user input and add money to acc for happy path if not enough
-      allow_any_instance_of(Kernel).to receive(:gets).and_return(amount, amount)
-      subject.deposit if subject.account < amount.to_f
+      allow_any_instance_of(Kernel).to receive(:gets).and_return(amount)
     end
 
-    it 'decreaces @account by the input amount' do
+    it 'decreaces @account by the input amount, returns changed @account' do
+      # Add money to acc for happy path if the BALANCE File value is not enough
+      subject.deposit if subject.account < amount.to_f
+      # Run example
+      # Don't combine these two types of matchers in single expectation
+      # Or implement `supports_block_expectations` https://github.com/rspec/rspec-expectations/issues/536#issuecomment-248032716
       expect { subject.withdraw }.to change { subject.account }.by(-amount.to_f)
+      expect(subject.withdraw).to eq(subject.account)
+    end
+
+    context 'when balance insufficient' do
+      # Make sure to put amount greater than account balance in BALANCE File
+      let(:amount) { (subject.account + 9000.5).to_s }
+      it 'throws message, returns unchanged @account' do
+        expect { subject.withdraw }.to output(
+          /ERROR! Balance insufficient!/
+        ).to_stdout
+          .and change(subject, :account).by 0
+        expect(subject.withdraw).to eq(subject.account)
+      end
     end
   end
 end
 
-  # describe '.input_float' do
-  #   it 'asks user to input float' do
-  #     expect(atm.input_float).to eq Float
-  #   end
-  
-  #   context 'when user input in not float or int' do
-  #     let(:input) { 'float' }
-  
-  #     it { expect { subject }.to raise_error(ArgumentError) }
-  #   end
 
-  
-  #   desribe '#deposit' do
-  #   end
-  # end
-
-# use for loop in init
+# # Use this for stopping the loop in Atm.init:
 # allow(subject).to receive(:loop).and_yield
