@@ -105,6 +105,10 @@ RSpec.describe Atm do
       expect(subject.account).to eq(File.read(BALANCE).to_f)
     end
   end
+
+  describe '#init' do
+    # TODO
+  end
 end
 
 
