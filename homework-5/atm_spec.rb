@@ -56,12 +56,16 @@ RSpec.describe Atm do
     end
   end
 
-  # describe '#deposit' do
-  #   let(:input) { '100' }
+  describe '#deposit' do
+    let(:amount) { '50.75' }
 
-  #   before { allow_any_instance_of(Kernel).to receive(:gets).and_return(input) }
+    before { allow_any_instance_of(Kernel).to receive(:gets).and_return(amount) }
+    after { subject.account - 50.75 }
 
-  # end
+    it 'asks for input and increaces @account by the amount' do
+      expect { subject.deposit }.to change { subject.account }.by 50.75
+    end
+  end
 end
 
   # describe '.input_float' do
