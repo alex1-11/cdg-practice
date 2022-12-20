@@ -35,7 +35,7 @@ RSpec.describe Atm do
 
     context 'when input is negative' do
       let(:input) { '-7' }
-      
+
       it 'throws message to console and returns 0' do
         expect { subject.send(:input_float) }.to output(
           /ERROR! Amount should be a POSITIVE number!/
@@ -44,6 +44,16 @@ RSpec.describe Atm do
       end
     end
 
+    context 'when input is not a Float (or int)' do
+      let(:input) { 'foo' }
+
+      it 'rescues ArgumentError, throws message to console and returns 0' do
+        expect { subject.send(:input_float) }.to output(
+          /ERROR! Amount should be a NUMBER! Floating point is allowed./
+        ).to_stdout
+        expect(subject.send(:input_float)).to equal 0
+      end
+    end
   end
 end
 
