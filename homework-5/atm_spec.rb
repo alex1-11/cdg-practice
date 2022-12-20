@@ -99,10 +99,10 @@ RSpec.describe Atm do
 
   describe '#quit' do
     it 'saves @account value to BALANCE File' do
-      # mock = double(File.open(BALANCE))
+      # Mock the interaction with File https://www.rubyguides.com/2018/10/rspec-mocks/
       expect(File).to receive(:write).with(BALANCE, subject.account)
       subject.quit
-      # expect { subject.quit }.to change { File.}
+      expect(subject.account).to eq(File.read(BALANCE).to_f)
     end
   end
 end
@@ -110,3 +110,16 @@ end
 
 # # Use this for stopping the loop in Atm.init:
 # allow(subject).to receive(:loop).and_yield
+
+# # Snippet for integration test of #quit
+# describe '#quit' do
+#   before do
+#     allow_any_instance_of(Kernel).to receive(:gets).and_return('0.7777')
+#   end
+#   it 'saves @account value to BALANCE File' do
+#     allow(File).to receive(:write).with(BALANCE, subject.account + 0.7777)
+#     subject.deposit
+#     subject.quit
+#     expect(subject.account).to eq(File.read(BALANCE).to_f + 0.7777)
+#   end
+# end
