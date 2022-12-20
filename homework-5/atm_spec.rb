@@ -32,6 +32,18 @@ RSpec.describe Atm do
       # https://tips.tutorialhorizon.com/2016/08/11/how-to-test-a-private-method-in-rspec
       expect(subject.send(:input_float)).to equal 100.0
     end
+
+    context 'when input is negative' do
+      let(:input) { '-7' }
+      
+      it 'throws message to console and returns 0' do
+        expect { subject.send(:input_float) }.to output(
+          /ERROR! Amount should be a POSITIVE number!/
+        ).to_stdout
+        expect(subject.send(:input_float)).to equal 0
+      end
+    end
+
   end
 end
 
