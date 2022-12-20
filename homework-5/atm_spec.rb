@@ -101,7 +101,7 @@ RSpec.describe Atm do
     it 'saves @account value to BALANCE File' do
       # Mock the interaction with File https://www.rubyguides.com/2018/10/rspec-mocks/
       expect(File).to receive(:write).with(BALANCE, subject.account)
-      subject.quit
+      expect { subject.quit }.to output(/FUNDS ARE SAFU/).to_stdout
       expect(subject.account).to eq(File.read(BALANCE).to_f)
     end
   end
