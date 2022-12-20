@@ -67,12 +67,16 @@ RSpec.describe Atm do
   end
 
   describe '#withdraw' do
-    let(:amount) { '11.25' }
+    let(:amount) { '9000.25' }
 
-    before { allow_any_instance_of(Kernel).to receive(:gets).and_return(amount) }
+    before do
+      # Handle user input and add money to acc for happy path if not enough
+      allow_any_instance_of(Kernel).to receive(:gets).and_return(amount, amount)
+      subject.deposit if subject.account < amount.to_f
+    end
 
     it 'decreaces @account by the input amount' do
-      expect { subject.withdraw }.to change { subject.account }.by(-11.25)
+      expect { subject.withdraw }.to change { subject.account }.by(-amount.to_f)
     end
   end
 end
