@@ -22,7 +22,19 @@ RSpec.describe Atm do
       expect(subject.balance).to eq subject.account
     end
   end
+
+  describe '.input_float' do
+    let(:input) { '100' }
+
+    before { allow_any_instance_of(Kernel).to receive(:gets).and_return(input) }
+
+    it 'asks to input float, validates value and returns float' do
+      # https://tips.tutorialhorizon.com/2016/08/11/how-to-test-a-private-method-in-rspec
+      expect(subject.send(:input_float)).to equal 100.0
+    end
+  end
 end
+
   # describe '.input_float' do
   #   it 'asks user to input float' do
   #     expect(atm.input_float).to eq Float
@@ -39,7 +51,5 @@ end
   #   end
   # end
 
-# before do
-#   allow(subject).to receive(:loop).and_yield
-#   allow_any_instance_of(Kernel).to receive(:gets).and_return('q')
-# end
+# use for loop in init
+# allow(subject).to receive(:loop).and_yield
