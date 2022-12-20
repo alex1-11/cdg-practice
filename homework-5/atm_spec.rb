@@ -96,6 +96,15 @@ RSpec.describe Atm do
       end
     end
   end
+
+  describe '#quit' do
+    it 'saves @account value to BALANCE File' do
+      mock = double('File')
+      expect(mock).to_receive(:write).with(BALANCE, subject.account)
+      subject.quit
+      # expect { subject.quit }.to change { File.}
+    end
+  end
 end
 
 
