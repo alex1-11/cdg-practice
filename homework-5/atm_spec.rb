@@ -61,8 +61,18 @@ RSpec.describe Atm do
 
     before { allow_any_instance_of(Kernel).to receive(:gets).and_return(amount) }
 
-    it 'asks for input and increaces @account by the amount' do
+    it 'increaces @account by the input amount' do
       expect { subject.deposit }.to change { subject.account }.by 50.75
+    end
+  end
+
+  describe '#withdraw' do
+    let(:amount) { '11.25' }
+
+    before { allow_any_instance_of(Kernel).to receive(:gets).and_return(amount) }
+
+    it 'decreaces @account by the input amount' do
+      expect { subject.withdraw }.to change { subject.account }.by(-11.25)
     end
   end
 end
