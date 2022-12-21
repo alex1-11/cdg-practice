@@ -1,10 +1,10 @@
-BALANCE = 'balance.txt'.freeze
+BALANCE = 'balance.txt'
 DEFAULT_BALANCE = 100.0
 
 GREETING = "
 =============================================
 Hello and welcome to Royal bank of Stormwind!
-=============================================".freeze
+============================================="
 
 TIP = %(  To proceed type-in one of the options:
   B - show current account balance,
@@ -12,7 +12,7 @@ TIP = %(  To proceed type-in one of the options:
   W - withdraw money from the account,
   Q - quit ATM.
 
-Enter the command: ).freeze
+Enter the command: )
 
 # The ATM app. Initialize an instance as a variable to load up balance value.
 # Then use init for CLI to interact.
