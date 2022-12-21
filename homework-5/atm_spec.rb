@@ -107,7 +107,7 @@ RSpec.describe Atm do
   end
 
   describe '#init' do
-    let(commands) do
+    let(:commands) do
       { b: :balance,
         D: :deposit,
         w: :withdraw,
@@ -125,20 +125,19 @@ RSpec.describe Atm do
     before do
       allow_any_instance_of(Kernel).to receive(:gets)
                                    .and_return(*commands.keys.map(&:to_s))
-    end
-
-    it 'greets in console with instructions, gets commands, calls methods' do
-      subject.init
       commands.each do |_cmd, method|
         # Stub the called method
         if not method.nil?
           expect(subject).to receive(method)
-          expect(subject).to receive(:balance) if [:deposit, :withdraw].include?(method)
+          expect(subject).to receive(:balance) if %i[deposit withdraw].include?(method)
         end
-
         # More on Ruby regex https://www.rubyguides.com/2015/06/ruby-regex/
         # expect { subject.init }.to output(/Hello and welcome.*#{TIP}/m).to_stdout
       end
+    end
+
+    it 'greets in console with instructions, gets commands, calls methods' do
+      subject.init
     end
 
   end
