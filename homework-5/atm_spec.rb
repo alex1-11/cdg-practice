@@ -107,7 +107,31 @@ RSpec.describe Atm do
   end
 
   describe '#init' do
-    # TODO
+    # commands = { b: :balance,
+    #              D: :deposit,
+    #              w: :withdraw,
+    #              Q: :quit,
+    #              LoReN: nil }
+
+    it 'greets in console with instructions, starts the loop for commands' do
+      # Stub the loop
+      allow(subject).to receive(:loop)
+      # More on Ruby regex https://www.rubyguides.com/2015/06/ruby-regex/
+      expect { subject.init }.to output(/Hello and welcome/).to_stdout
+    end
+
+    
+    # commands.each do |cmd, method|
+    #   it "greets in console with instructions, gets #{cmd}, calls methods" do
+    #     allow_any_instance_of(Kernel).to receive(:gets).and_return(command[i])
+    #     # Stub the loop
+    #     allow(subject).to receive(:loop).and_yield
+    #     expect(subject).to receive(:balance)
+    #     # More on Ruby regex https://www.rubyguides.com/2015/06/ruby-regex/
+    #     expect { subject.init }.to output(/Hello and welcome.*#{TIP}/m).to_stdout
+    #   end
+    # end
+
   end
 end
 
