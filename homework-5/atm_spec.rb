@@ -107,12 +107,13 @@ RSpec.describe Atm do
   end
 
   describe '#init' do
-    commands = { b: :balance,
-                 D: :deposit,
-                 w: :withdraw,
-                 Q: :quit,
-                 LoReN: nil }
-
+    let(commands) do
+      { b: :balance,
+        D: :deposit,
+        w: :withdraw,
+        Q: :quit,
+        LoReN: nil }
+      end
     # it 'greets in console with instructions, starts the loop for commands' do
     #   # Stub the loop
     #   allow(subject).to receive(:loop)
@@ -121,15 +122,23 @@ RSpec.describe Atm do
     # end
 
     # Testing inside the loop (may be handy https://gist.github.com/TimothyClayton/7c9fd2e3389ee07f13e07d92aff02b11 )
+    before do
+      allow_any_instance_of(Kernel).to receive(:gets)
+                                   .and_return(*commands.keys.map(&:to_s))
+    end
+
     it 'greets in console with instructions, gets commands, calls methods' do
-      allow_any_instance_of(Kernel).to receive(:gets).and_return(cmd.to_s)
       subject.init
-        commands.each do |cmd, method|
-          # Stub the loop
-          expect(subject).to receive(:balance)
-          # More on Ruby regex https://www.rubyguides.com/2015/06/ruby-regex/
-          expect { subject.init }.to output(/Hello and welcome.*#{TIP}/m).to_stdout
+      commands.each do |_cmd, method|
+        # Stub the called method
+        if not method.nil?
+          expect(subject).to receive(method)
+          expect(subject).to receive(:balance) if [:deposit, :withdraw].include?(method)
         end
+
+        # More on Ruby regex https://www.rubyguides.com/2015/06/ruby-regex/
+        # expect { subject.init }.to output(/Hello and welcome.*#{TIP}/m).to_stdout
+      end
     end
 
   end
