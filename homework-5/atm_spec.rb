@@ -107,55 +107,50 @@ RSpec.describe Atm do
   end
 
   describe '#init' do
-    let(:commands) do
-      { b: :balance,
-        D: :deposit,
-        w: :withdraw,
-        Q: :quit,
-        LoReN: nil }
-      end
-    # it 'greets in console with instructions, starts the loop for commands' do
-    #   # Stub the loop
-    #   allow(subject).to receive(:loop)
-    #   # More on Ruby regex https://www.rubyguides.com/2015/06/ruby-regex/
-    #   expect { subject.init }.to output(/Hello and welcome/).to_stdout
-    # end
+    it 'greets with instructions, starts the loop for commands' do
+      # Stub the loop
+      allow(subject).to receive(:loop)
+      # More on Ruby regex https://www.rubyguides.com/2015/06/ruby-regex/
+      expect { subject.init }.to output(/Hello and welcome/).to_stdout
+    end
 
-    # Testing inside the loop (may be handy https://gist.github.com/TimothyClayton/7c9fd2e3389ee07f13e07d92aff02b11 )
-    before do
-      allow_any_instance_of(Kernel).to receive(:gets)
-                                   .and_return(*commands.keys.map(&:to_s))
-      commands.each do |_cmd, method|
-        # Stub the called method
-        if not method.nil?
+    context 'commands are being given one by one' do
+      let(:commands) do
+        { b: :balance,
+          D: :deposit,
+          w: :withdraw,
+          Q: :quit }
+      end
+      # Testing inside the loop (may be handy https://gist.github.com/TimothyClayton/7c9fd2e3389ee07f13e07d92aff02b11 )
+      before do
+        allow_any_instance_of(Kernel).to receive(:gets)
+                                     .and_return(*commands.keys.map(&:to_s))
+      end
+
+      after { subject.init }
+
+      it 'inputs cmds and triggers methods, ends loop with :quit' do
+        commands.each_value do |method|
+          reputs_balance = %i[deposit withdraw].include?(method) ? true : false
+          # Stub the called method(-s)
           expect(subject).to receive(method)
-          expect(subject).to receive(:balance) if %i[deposit withdraw].include?(method)
+          expect(subject).to receive(:balance) if reputs_balance
         end
-        # More on Ruby regex https://www.rubyguides.com/2015/06/ruby-regex/
-        # expect { subject.init }.to output(/Hello and welcome.*#{TIP}/m).to_stdout
       end
     end
 
-    it 'greets in console with instructions, gets commands, calls methods' do
-      subject.init
-    end
+    context 'input wrong command' do
+      before do
+        allow_any_instance_of(Kernel).to receive(:gets)
+                                     .and_return('not defined', 'command', 'q')
+      end
 
+      it 'puts error and continues to loop till :quit' do
+        expect(subject).to receive(:quit)
+        expect { subject.init }
+          .to output(/ERROR: Input error! No such command.*ERROR: Input error/m)
+          .to_stdout
+      end
+    end
   end
 end
-
-
-# # Use this for stopping the loop in Atm.init:
-# allow(subject).to receive(:loop).and_yield
-
-# # Snippet for integration test of #quit
-# describe '#quit' do
-#   before do
-#     allow_any_instance_of(Kernel).to receive(:gets).and_return('0.7777')
-#   end
-#   it 'saves @account value to BALANCE File' do
-#     allow(File).to receive(:write).with(BALANCE, subject.account + 0.7777)
-#     subject.deposit
-#     subject.quit
-#     expect(subject.account).to eq(File.read(BALANCE).to_f + 0.7777)
-#   end
-# end
