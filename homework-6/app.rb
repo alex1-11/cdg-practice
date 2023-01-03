@@ -1,14 +1,15 @@
 require 'rack'
 require 'pry'
 
-require './atm.rb'
+require './atm'
 
+# A Rack app to handle HTTP requests
 class App
   def call(env)
     req = Rack::Request.new(env)
 
     # Packs params from GET request into array of hashes
-    params = req.query_string.split('&').map{ |pair| pair.split('=') }.to_h
+    params = req.query_string.split('&').map { |pair| pair.split('=') }.to_h
 
     # Check params in console
     puts params
