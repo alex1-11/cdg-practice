@@ -2,15 +2,28 @@
 <html>
     <head>
         <title>ATM primitive http server</title>
+        <style>
+            body, a, input, button {
+                background: black;
+                color: rgb(193, 255, 123);
+            }
+            a {color: rgb(193, 255, 123)}
+            input, button {
+                background: rgb(53, 53, 53);
+                color: rgb(193, 255, 123);
+            }
+            </style>
     </head>
-    <body style="background:black, color: grey">
+    <body>
         <div>
             <h1>Hello and welcome to Royal bank of Stormwind!</h1>
             <p>To proceed choose one of the options:</p>
+            <br>
         </div>
         <div>
             <h2>Balance</h2>
             <a href="balance">Show current account balance</a>
+            <br><br>
         </div>
         <div>
             <h2>Deposit</h2>
@@ -20,6 +33,7 @@
                 <input id="deposit_value" name="value" type="number" min="0" step="0.01" placeholder="1.00">
                 <button type="submit">Deposit</button>
             </form>
+            <br><br>
         </div>
         <div>
             <h2>Withdraw</h2>
@@ -29,6 +43,7 @@
                 <input id="withdraw_value" name="value" type="number" min="0" step="0.01" placeholder="1.00">
                 <button type="submit">Withdraw</button>
             </form>
+            <br><br>
         </div>
     </body>
 </html>
