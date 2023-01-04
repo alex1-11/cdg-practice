@@ -87,6 +87,7 @@ class Atm
     amount = validate_float(amount)
     puts 'Deposit successfully completed.' if amount.positive?
     @account += amount
+    save_balance
   end
 
   # Asks for amount to withdraw, checks if it's possible and updates account
@@ -105,15 +106,10 @@ class Atm
     @account -= amount
   end
 
-  # Saves current account balance to the file and closes it
-  def quit
-    puts 'Closing session...'
+  # Saves current account balance to the file, closes file, returns balance
+  def save_balance
     File.write(BALANCE, @account)
-    puts '',
-         '===================================================',
-         'FUNDS ARE SAFU!',
-         'Thanks for using Royal bank of Stormwind! Good bye!',
-         '==================================================='
+    @account
   end
 
   private :validate_float
