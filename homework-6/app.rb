@@ -17,28 +17,39 @@ class App
     case req.path
     when '/'
       [200, { 'Content-Type' => 'text/html' }, File.readlines('./index.html')]
-    when '/atm'
+    when '/balance'
+      params['action'] = 'B'
       result = atm_controller(params)
-      [200, { 'Content-Type' => 'text/html' }, ["<h1>#{result}</h1>", "<a href='/'>Home</a>"]]
+      [200, { 'Content-Type' => 'text/html' }, ["<h3>#{result}</h3>",
+                                                "<br><a href='/'>Home</a>"]]
+    when '/deposit'
+      params['action'] = 'D'
+      result = atm_controller(params)
+      [200, { 'Content-Type' => 'text/html' }, ["<h3>#{result}</h3>",
+                                                "<br><a href='/'>Home</a>"]]
+    when '/withdraw'
+      params['action'] = 'W'
+      result = atm_controller(params)
+      [200, { 'Content-Type' => 'text/html' }, ["<h3>#{result}</h3>",
+                                                "<br><a href='/'>Home</a>"]]
     else
-      [404, { 'Content-Type' => 'text/html' }, ['<h1>404</h1>', '<p>Page not found. Try to check your request.</p>']]
+      [404, { 'Content-Type' => 'text/html' }, ['<h1>404</h1>',
+                                                '<p>Page not found. Try to check your request.</p>',
+                                                "<br><a href='/'>Home</a>"]]
     end
   end
 
   def atm_controller(params)
     atm = Atm.new
-
     case params['action']
     when 'B'
-      atm.balance
+      "Current balance is #{atm.balance} gold."
     when 'D'
-      atm.deposit
+      "Previous balance was #{atm.balance} gold.<br>"\
+      "New balance after deposit attempt is #{atm.deposit(params['value'])} gold."
     when 'W'
-      atm.withdraw
-    when 'Q'
-      atm.quit
+      "Previous balance was #{atm.balance} gold.<br>"\
+      "New balance after withdraw attempt is #{atm.withdraw(params['value'])} gold."
     end
-
-    atm.balance
   end
 end
