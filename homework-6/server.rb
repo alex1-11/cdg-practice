@@ -13,9 +13,9 @@ while (connection = server.accept)
   path = full_path.split('?')[0]
 
   status, headers, body = app.call({
-                                     REQUEST_METHOD: method,
-                                     PATH_INFO: path,
-                                     QUERY_STRING: full_path.split('?')[1]
+                                     'REQUEST_METHOD' => method,
+                                     'PATH_INFO' => path,
+                                     'QUERY_STRING' => full_path.split('?')[1]
                                    })
 
   connection.print("HTTP/1.1 #{status}\r\n")
