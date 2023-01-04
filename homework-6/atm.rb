@@ -64,7 +64,7 @@ class Atm
     @account
   end
 
-  # Gets correct float from user input
+  # Checks if float from user input is correct
   def validate_float(amount)
     amount = Float(amount)
 
@@ -90,20 +90,19 @@ class Atm
     save_balance
   end
 
-  # Asks for amount to withdraw, checks if it's possible and updates account
-  def withdraw
-    print 'Enter amount you wish to withdraw: '
-    amount = input_float
-    puts ''
+  # Validates amount to withdraw, updates account balance if ok
+  def withdraw(amount)
+    amount = validate_float(amount)
 
     # Make sure user has sufficient balance
     if amount > @account
-      puts 'ERROR! Balance insufficient! <<<<<<<<<<<<<<<<<'
+      puts 'ERROR! Balance insufficient!'
       amount = 0
     end
 
     puts 'Withdrawal successfully completed.' if amount != 0
     @account -= amount
+    save_balance
   end
 
   # Saves current account balance to the file, closes file, returns balance
