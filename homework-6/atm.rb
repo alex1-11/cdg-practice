@@ -65,29 +65,26 @@ class Atm
   end
 
   # Gets correct float from user input
-  def input_float
-    amount = Float(gets.chomp)
-    puts
+  def validate_float(amount)
+    amount = Float(amount)
 
     # Verify if input is positive
     if amount <= 0
-      puts 'ERROR! Amount should be a POSITIVE number! <<<<<<<<<<<<<<<<<'
+      puts 'ERROR! Amount should be a POSITIVE number!'
       amount = 0
     end
     amount
 
   # Handles error and puts it to console if input is not Float type -- https://stackoverflow.com/a/31411319/20260711
   rescue ArgumentError
-    puts 'ERROR! Amount should be a NUMBER! Floating point is allowed. <<<<<<<<<<<<<<<<<'
+    puts 'ERROR! Amount should be a NUMBER! Floating point is allowed.'
     # Returns zero if input was invalid type
     0
   end
 
-  # Asks for amount to deposit and increases the account balance
-  def deposit
-    print 'Enter amount you wish to deposit: '
-    amount = input_float
-    puts ''
+  # Increases the account balance by given amount after validation
+  def deposit(amount)
+    amount = validate_float(amount)
     puts 'Deposit successfully completed.' if amount.positive?
     @account += amount
   end
@@ -119,7 +116,7 @@ class Atm
          '==================================================='
   end
 
-  private :input_float
+  private :validate_float
 end
 
 # atm = Atm.new
