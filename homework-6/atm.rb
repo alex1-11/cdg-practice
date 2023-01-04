@@ -1,21 +1,7 @@
 BALANCE = 'balance.txt'
 DEFAULT_BALANCE = 100.0
 
-GREETING = "
-=============================================
-Hello and welcome to Royal bank of Stormwind!
-============================================="
-
-TIP = %(  To proceed type-in one of the options:
-  B - show current account balance,
-  D - deposit extra money to the account,
-  W - withdraw money from the account,
-  Q - quit ATM.
-
-Enter the command: )
-
 # The ATM app. Initialize an instance as a variable to load up balance value.
-# Then use init for CLI to interact.
 class Atm
   attr_reader :account
 
@@ -24,43 +10,8 @@ class Atm
     @account = File.exist?(BALANCE) ? File.read(BALANCE).to_f : DEFAULT_BALANCE
   end
 
-  # Starts CLI to interact with ATM.
-  # Asks user for command input and triggers the action ATM should take.
-  def init
-    # Interact with user, give starting instructions
-    puts GREETING
-
-    loop do
-      # Ask user input, force to upcase
-      puts TIP
-      command = gets.chomp.upcase
-      puts ''
-
-      # Execute the given command depending on preset
-      case command
-      when 'B'
-        balance
-      when 'D'
-        deposit
-        balance
-      when 'W'
-        withdraw
-        balance
-      when 'Q'
-        quit
-        break
-      else
-        puts 'ERROR: Input error! No such command. <<<<<<<<<<<<<<<<<'
-      end
-    end
-  end
-
-  # Puts user's account balance at console
+  # Simply returns user's account balance
   def balance
-    puts '__________________________________________',
-         '',
-         "Current balance is #{@account} golden units",
-         '__________________________________________'
     @account
   end
 
@@ -113,6 +64,3 @@ class Atm
 
   private :validate_float
 end
-
-# atm = Atm.new
-# atm.init

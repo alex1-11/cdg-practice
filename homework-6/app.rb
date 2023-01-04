@@ -43,13 +43,13 @@ class App
     atm = Atm.new
     case params['action']
     when 'B'
-      "Current balance is #{atm.balance} gold."
+      "Current balance is <u>#{atm.balance}</u> gold."
     when 'D'
-      "Previous balance was #{atm.balance} gold.<br>"\
-      "New balance after deposit attempt is #{atm.deposit(params['value'])} gold."
+      "Previous balance was <u>#{atm.balance}</u> gold.<br>"\
+      "New balance after deposit attempt is <u>#{atm.deposit(params['value'])}</u> gold."
     when 'W'
-      "Previous balance was #{atm.balance} gold.<br>"\
-      "New balance after withdraw attempt is #{atm.withdraw(params['value'])} gold."
+      "Previous balance was <u>#{atm.balance}</u> gold.<br>"\
+      "New balance after withdraw attempt is <u>#{atm.withdraw(params['value'])}</u> gold."
     end
   end
 end
